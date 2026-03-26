@@ -116,6 +116,9 @@ async def register(prediction: Prediction):
 
 @app.get("/dashboard")
 async def get_dashboard():
+    # Intentar siempre obtener el marcador real, independientemente de Sheets
+    live_score = football.get_live_score()
+    
     if not sheets:
         # Use local predictions + seed data for development
         seed_data = [
@@ -123,10 +126,8 @@ async def get_dashboard():
             {"Timestamp": "2024-03-24 10:05:00", "Nombre": "Maria Lopez", "BUID": "87654321", "Goles Col": 0, "Goles Cro": 1, "Estado": "Activo"},
         ]
         all_data = seed_data + local_predictions
-        live_score = (0, 0, "NS")
     else:
         all_data = sheets.get_all_predictions()
-        live_score = football.get_live_score()
 
     real_col_raw, real_cro_raw, match_status = live_score
     real_col = int(real_col_raw)
