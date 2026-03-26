@@ -3,6 +3,8 @@ import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 
+import json
+
 # Scopes required for Google Sheets and Drive
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -17,6 +19,17 @@ class SheetsConnector:
         self.sheet = self.client.open_by_key(spreadsheet_id).sheet1
 
     def _authenticate(self):
+        # 1. Intentar cargar desde variable de entorno (para Render/Nube)
+        env_json = os.getenv("SERVICE_ACCOUNT_JSON")
+        if env_json:
+            try:
+                creds_dict = json.loads(env_json)
+                credentials = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+                return gspread.authorize(credentials)
+            except Exception as e:
+                print(f"Error cargando JSON de variable: {e}")
+
+        # 2. Fallback al archivo local
         if not os.path.exists(self.credentials_path):
             raise FileNotFoundError(f"Credentials file not found at {self.credentials_path}")
         
