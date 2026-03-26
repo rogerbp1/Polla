@@ -3,13 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Users, Target, Clock, Trophy, AlertTriangle } from 'lucide-react'
 import axios from 'axios'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8080'
+
 const Dashboard = () => {
   const [matchData, setMatchData] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8080/dashboard')
+      const response = await axios.get(`${API_BASE_URL}/dashboard`)
       setMatchData(response.data)
       setLoading(false)
     } catch (error) {

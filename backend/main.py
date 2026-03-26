@@ -40,7 +40,7 @@ registered_buids: set = set()
 
 class Prediction(BaseModel):
     name: str = Field(..., min_length=2, description="Nombre completo del participante")
-    buid: str = Field(..., pattern=r"^\d{8,10}$", description="Binance UID de 8 a 10 dígitos")
+    buid: str = Field(..., pattern=r"^\d{4,10}$", description="Binance UID de 4 a 10 dígitos")
     goals_col: int = Field(..., ge=0, le=20, description="Goles predichos para Colombia")
     goals_cro: int = Field(..., ge=0, le=20, description="Goles predichos para Croacia")
 

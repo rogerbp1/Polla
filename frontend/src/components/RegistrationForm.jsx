@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { User, Hash, CheckCircle, Info, ShieldAlert, PartyPopper, AlertCircle } from 'lucide-react'
 import axios from 'axios'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8080'
+
 const RegistrationForm = ({ onComplete }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -33,9 +35,9 @@ const RegistrationForm = ({ onComplete }) => {
 
   // Check if BUID is already registered when user finishes typing
   const checkBuid = async (buid) => {
-    if (!/^\d{8,10}$/.test(buid)) return
+    if (!/^\d{4,10}$/.test(buid)) return
     try {
-      const res = await axios.get(`http://127.0.0.1:8080/check-buid/${buid}`)
+      const res = await axios.get(`${API_BASE_URL}/check-buid/${buid}`)
       if (res.data.registered) {
         setBuidError('⚠️ Este BUID ya está registrado. Solo puedes participar una vez.')
       } else {
@@ -52,7 +54,7 @@ const RegistrationForm = ({ onComplete }) => {
     setLoading(true)
     setError('')
     try {
-      await axios.post('http://127.0.0.1:8080/register', {
+      await axios.post(`${API_BASE_URL}/register`, {
         name: formData.name.trim(),
         buid: formData.buid,
         goals_col: formData.goals_col,
@@ -81,7 +83,7 @@ const RegistrationForm = ({ onComplete }) => {
 
   const isFormValid = 
     formData.name.trim().length >= 2 && 
-    /^\d{8,10}$/.test(formData.buid) && 
+    /^\d{4,10}$/.test(formData.buid) && 
     !buidError &&
     formData.goals_col >= 0 &&
     formData.goals_cro >= 0 &&
@@ -135,7 +137,7 @@ const RegistrationForm = ({ onComplete }) => {
           </label>
           <input 
             type="text" 
-            placeholder="8 a 10 dígitos"
+            placeholder="4 a 10 dígitos"
             className={`input-field ${buidError ? 'border-red-500/50 focus:border-red-500' : ''}`}
             value={formData.buid}
             onChange={(e) => {
@@ -147,8 +149,8 @@ const RegistrationForm = ({ onComplete }) => {
             maxLength={10}
             required
           />
-          {formData.buid && !/^\d{8,10}$/.test(formData.buid) && (
-            <p className="text-red-400 text-xs mt-1">Debe tener entre 8 y 10 dígitos.</p>
+          {formData.buid && !/^\d{4,10}$/.test(formData.buid) && (
+            <p className="text-red-400 text-xs mt-1">Debe tener entre 4 y 10 dígitos.</p>
           )}
           {buidError && (
             <motion.p 
