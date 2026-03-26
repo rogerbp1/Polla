@@ -1,0 +1,8 @@
+# Dependencies for Polla Futbolera Backend
+fastapi
+uvicorn
+gspread
+google-auth
+requests
+pydantic
+python-dotenv
