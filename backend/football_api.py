@@ -51,14 +51,10 @@ class FootballAPI:
 
     def get_live_score(self):
         """Obtiene el marcador real en tiempo real."""
-        # --- NUEVO: SOPORTE PARA MARCADOR MANUAL (FALLBACK) ---
-        fixed_col = os.getenv("FIXED_SCORE_COL")
-        fixed_cro = os.getenv("FIXED_SCORE_CRO")
-        fixed_status = os.getenv("FIXED_STATUS", "1H")
-        
-        if fixed_col is not None and fixed_cro is not None:
-             return int(fixed_col), int(fixed_cro), fixed_status
-        # -----------------------------------------------------
+        # --- EMERGENCIA: MARCADOR HARDCODEADO 1-1 ---
+        # Fuerza el resultado sin depender de .env o API temporalmente
+        return 1, 1, "1H"
+        # ---------------------------------------------
 
         if not self.fixture_id:
             self.find_today_fixture()
