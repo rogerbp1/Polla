@@ -47,9 +47,24 @@ const Dashboard = () => {
       {/* Live Match Card */}
       <div className="neon-border p-8 text-center bg-binance-dark/80 backdrop-blur-xl">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-          <span className="text-[10px] uppercase font-bold tracking-widest text-red-500">EN VIVO</span>
+          <div className={`w-2 h-2 ${matchData.live_score.status === 'FT' ? 'bg-gray-500' : 'bg-red-500 rounded-full animate-pulse'}`} />
+          <span className={`text-[10px] uppercase font-bold tracking-widest ${matchData.live_score.status === 'FT' ? 'text-gray-400' : 'text-red-500'}`}>
+            {matchData.live_score.status === 'FT' ? 'PARTIDO FINALIZADO' : 'EN VIVO'}
+          </span>
         </div>
+        
+        {matchData.live_score.status === 'FT' && !matchData.participants.some(p => p.diff === 0) && (
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="mb-6 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl"
+          >
+            <p className="text-orange-500 font-black tracking-[0.3em] uppercase text-xl">
+              ¡SIN GANADOR!
+            </p>
+            <p className="text-[10px] text-orange-400/60 uppercase tracking-widest mt-1">Nadie acertó el marcador exacto</p>
+          </motion.div>
+        )}
         
         <div className="flex items-center justify-center gap-8 md:gap-16">
           <div className="text-center group">
