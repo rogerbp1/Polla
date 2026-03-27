@@ -51,9 +51,9 @@ class FootballAPI:
 
     def get_live_score(self):
         """Obtiene el marcador real en tiempo real."""
-        # --- EMERGENCIA: MARCADOR HARDCODEADO 1-1 ---
+        # --- EMERGENCIA: MARCADOR HARDCODEADO 1-2 ---
         # Fuerza el resultado sin depender de .env o API temporalmente
-        return 1, 1, "1H"
+        return 1, 2, "1H"
         # ---------------------------------------------
 
         if not self.fixture_id:
